@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result March 2024 | GHS Ghuduwala Digital portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<head>
+  <script src="datamar24ex.js"></script> 
+</head>
+
+<style>
+:root {
+  --primary: #1e3a8a;
+  --bg: #f1f5f9;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+
+body { background: var(--bg); padding: 20px; color: #334155; }
+
+/* --- HEADER --- */
+header {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo-area { display: flex; align-items: center; gap: 10px; }
+header img { height: 50px; }
+header h2 { font-size: 16px; color: var(--primary); text-transform: uppercase; }
+
+.home-btn { text-decoration: none; font-size: 14px; font-weight: 700; color: var(--primary); }
+
+/* --- SEARCH FORM --- */
+.search-box {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.search-box h3 { text-align: center; margin-bottom: 20px; color: var(--primary); }
+
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #64748b; }
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  font-weight: 600;
+  text-transform: uppercase; /* Forces caps in view */
+}
+
+.search-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* --- RESULT SHEET (Hidden by default) --- */
+#resultSheet {
+  display: none;
+  max-width: 800px;
+  margin: 20px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.sheet-header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+/* Update this specific part in your <style> */
+.sheet-header h2 {
+  font-size: 18px; /* Changed from 24px to 18px */
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+
+.sheet-header p {
+  font-size: 11px; /* Smaller sub-text for "Annual Examination..." */
+  color: #64748b;
+}
+
+.student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+th { background: #f8fafc; }
+
+.total-row { font-weight: 800; background: #eee; }
+.footer-note { font-size: 11px; font-style: italic; color: #666; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+
+@media print {
+  .search-box, .home-btn, .search-btn { display: none; }
+  body { background: white; padding: 0; }
+  #resultSheet { display: block !important; border: none; box-shadow: none; }
+}
+/* --- WATERMARK (Only shows during print) --- */
+.watermark {
+  display: none; /* Hidden on screen */
+}
+
+@media print {
+  .watermark {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.05); /* Very light grey */
+    white-space: nowrap;
+    z-index: -1;
+    font-weight: 800;
+    pointer-events: none;
+  }
+  
+  /* Hide the warning popup and print button during actual printing */
+  .print-warning-box, .footer-note button {
+    display: none !important;
+  }
+}
+
+/* --- WARNING POPUP STYLE --- */
+.print-warning-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 100px rgba(0,0,0,0.5);
+  z-index: 3000;
+  text-align: center;
+  border: 3px solid #ef4444;
+  width: 90%;
+  max-width: 400px;
+}
+
+.print-warning-box h3 {
+  color: #ef4444;
+  margin-bottom: 15px;
+  font-family: 'Noto Sans Gurmukhi', sans-serif;
+}
+
+.print-warning-box button {
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <img src="logo.png" alt="School Logo">
+    <h2>GHS Ghuduwala (Mansa)</h2>
+  </div>
+  <a href="result.html" class="home-btn">← Back</a>
+</header>
+
+<div class="search-box" id="searchBox">
+  <h3>Search Result 2024</h3>
+  <div class="input-group">
+    <label>SELECT CLASS</label>
+    <select id="s_class">
+      <option value="6th">6th</option>
+      <option value="7th">7th</option>
+      <option value="9th">9th</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label>ROLL NUMBER</label>
+    <input type="number" id="s_roll" placeholder="">
+  </div>
+  <div class="input-group">
+    <label>STUDENT NAME (CAPITAL)</label>
+    <input type="text" id="s_name" placeholder="">
+  </div>
+  <div class="input-group">
+    <label>FATHER NAME (CAPITAL)</label>
+    <input type="text" id="s_father" placeholder="">
+  </div>
+  <button class="search-btn" onclick="findResult()">VIEW MARKSHEET</button>
+</div>
+
+<div id="resultSheet">
+  <div class="sheet-header">
+     <img src="logo.png" style="height:60px; float:left;">
+     <div style="text-align:center;">
+       <h2 style="color:var(--primary)">GOVERNMENT HIGH SCHOOL GHUDUWALA</h2>
+       <p style="font-size:12px;">ANNUAL EXAMINATION RESULT MARCH 2024</p>
+     </div>
+  </div>
+
+  <div class="student-info" id="studentDetails"></div>
+
+  <table id="marksTable"></table>
+
+  <div id="summary"></div>
+
+  <div class="footer-note">
+    <p><b>Note:</b> This is a computer-generated result. For an official DMC with seal and signature, please visit the school office.</p>
+    <button onclick="startPrintProcess()" style="margin-top:10px; padding:8px 15px; cursor:pointer; background:#1e3a8a; color:white; border-radius:5px; border:none; font-weight:bold;">
+  Print Result / Save PDF
+</button>
+
+  </div>
+</div>
+<div class="watermark">ROUGH COPY</div>
+
+<div id="printWarning" class="print-warning-box">
+  <h3>ਜ਼ਰੂਰੀ ਸੂਚਨਾ (Important)</h3>
+  <p style="color: red; font-weight: bold; font-family: 'Noto Sans Gurmukhi', sans-serif;">
+    ਕਿਰਪਾ ਕਰਕੇ ਸਕੂਲ ਜਾ ਕੇ ਹਸਤਾਖਰ ਕੀਤੀ ਹੋਈ ਅਸਲੀ ਕਾਪੀ ਪ੍ਰਾਪਤ ਕਰੋ।
+  </p>
+  <p style="margin-top:10px; font-size: 13px;">Please visit school to get the official signed DMC.</p>
+  <button onclick="executePrint()">ਪ੍ਰਿੰਟ ਕਰੋ (Proceed to Print)</button>
+  <button onclick="closeWarning()" style="background:#64748b;">ਵਾਪਸ (Cancel)</button>
+</div>
+
+<script>
+// --- YOUR CSV DATA GOES HERE ---
+// Convert your CSV rows into objects like this
+
+function findResult() {
+  const c = document.getElementById('s_class').value;
+  const r = parseInt(document.getElementById('s_roll').value);
+  const n = document.getElementById('s_name').value.trim().toUpperCase();
+  const f = document.getElementById('s_father').value.trim().toUpperCase();
+
+  const student = resultsDB.find(s => s.Class === c && s.RollNo === r && s.Name === n && s.Father === f);
+
+  if (student) {
+    document.getElementById('searchBox').style.display = 'none';
+    const sheet = document.getElementById('resultSheet');
+    sheet.style.display = 'block';
+
+    document.getElementById('studentDetails').innerHTML = `
+      <p><b>Name:</b> ${student.Name}</p>
+      <p><b>Father Name:</b> ${student.Father}</p>
+      <p><b>Class:</b> ${student.Class}</p>
+      <p><b>Roll No:</b> ${student.RollNo}</p>
+    `;
+
+    let tableHTML = `
+      <tr><th>Subject</th><th>Theory</th><th>CCE</th><th>Total</th></tr>
+      <tr><td>English</td><td>${student.Eng[0]}</td><td>${student.Eng[1]}</td><td>${student.Eng[2]}</td></tr>
+      <tr><td>Mathematics</td><td>${student.Math[0]}</td><td>${student.Math[1]}</td><td>${student.Math[2]}</td></tr>
+      <tr><td>Science</td><td>${student.Sci[0]}</td><td>${student.Sci[1]}</td><td>${student.Sci[2]}</td></tr>
+      <tr><td>SST</td><td>${student.SST[0]}</td><td>${student.SST[1]}</td><td>${student.SST[2]}</td></tr>
+      <tr><td>Punjabi</td><td>${student.Pbi[0]}</td><td>${student.Pbi[1]}</td><td>${student.Pbi[2]}</td></tr>
+      <tr><td>Hindi</td><td>${student.Hin[0]}</td><td>${student.Hin[1]}</td><td>${student.Hin[2]}</td></tr>
+      <tr class="total-row"><td>GRAND TOTAL</td><td colspan="2">OUT OF ${student.Class==='9th'?'650':'600'}</td><td>${student.Total}</td></tr>
+    `;
+    document.getElementById('marksTable').innerHTML = tableHTML;
+
+    let summaryHTML = `
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:10px;">
+        <div>
+          <p><b>Percentage:</b> ${student.Perc}%</p>
+          <p><b>Grade:</b> ${student.Grade}</p>
+          <p><b>Result:</b> ${student.Remark}</p>
+        </div>
+        <div style="border:1px solid #ccc; padding:10px;">
+          <p><b>Grading Subjects:</b></p>
+          <p>Computer: ${student.Comp}</p>
+          <p>Phy. Edu: ${student.Phy}</p>
+          ${student.Class !== '9th' ? `<p>Drawing: ${student.Draw}</p>` : ''}
+        </div>
+      </div>
+    `;
+    document.getElementById('summary').innerHTML = summaryHTML;
+
+  } else {
+    alert("Result not found! Please check Class, Roll No and Spelling (CAPITALS).");
+  }
+}
+function startPrintProcess() {
+  // Show the Red Warning Popup first
+  document.getElementById('printWarning').style.display = 'block';
+}
+
+function closeWarning() {
+  document.getElementById('printWarning').style.display = 'none';
+}
+
+function executePrint() {
+  // Hide warning and open the browser print dialog
+  closeWarning();
+  window.print();
+}
+
+</script>
+</body>
+</html>
