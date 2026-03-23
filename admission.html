@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admissions | GHS Ghuduwala Digital Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Noto+Sans+Gurmukhi:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #1e3a8a;
+  --accent: #2563eb;
+  --bg: #f8fafc;
+  --yellow: #fde047;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body { 
+  font-family: 'Inter', 'Noto Sans Gurmukhi', sans-serif; 
+  background: var(--bg); 
+  color: #1e293b; 
+  padding-bottom: 60px;
+}
+
+/* --- LANGUAGE SWITCHER --- */
+.lang-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #cbd5e1;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider { background-color: var(--primary); }
+input:checked + .slider:before { transform: translateX(26px); }
+
+/* --- BLINKING ADMISSION BADGE --- */
+.admission-badge {
+  background: #000;
+  color: var(--yellow);
+  padding: 12px 25px;
+  border-radius: 15px;
+  display: inline-block;
+  margin: 15px auto;
+  font-weight: 800;
+  font-size: 18px;
+  border: 2px solid var(--yellow);
+  box-shadow: 0 0 15px rgba(253, 224, 71, 0.4);
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px var(--yellow); transform: scale(1); }
+  to { box-shadow: 0 0 20px var(--yellow); transform: scale(1.05); }
+}
+
+/* --- CONTENT LOGIC --- */
+  /* Update this part in your <style> */
+.pa { display: none; }
+.en { display: block; }
+
+body.punjabi-mode .en { display: none; }
+body.punjabi-mode .pa { display: block; }
+
+/* --- HEADER --- */
+.header {
+  text-align: center;
+  padding: 30px 20px;
+  background: white;
+}
+
+.school-logo {
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.school-name {
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* --- HIGHLIGHTED DOCUMENTS --- */
+.doc-box {
+  background: #fef9c3;
+  border: 2px dashed #ca8a04;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+}
+
+.doc-box h3 { color: #854d0e; margin-bottom: 10px; font-size: 16px; text-align: center; }
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* --- FACILITIES GRID --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 110px;
+}
+
+.f-icon { font-size: 28px; margin-bottom: 8px; }
+.f-text { font-size: 12px; font-weight: 700; color: #334155; line-height: 1.3; }
+
+</style>
+</head>
+<body id="mainBody">
+<a href="index.html" style="position: absolute; top: 15px; left: 15px; text-decoration: none; background: white; padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 18px; z-index: 1100;">🏠</a>
+<div id="ghs-loader-container" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#ffffff; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:999999; transition: opacity 0.5s ease;">
+  
+  <div style="display:flex; gap:12px; margin-bottom:20px;">
+    <div class="ghs-dot" style="width:15px; height:15px; background:#1e3a8a; border-radius:50%; animation: ghs-bounce 1.4s infinite ease-in-out both; animation-delay: -0.32s;"></div>
+    <div class="ghs-dot" style="width:15px; height:15px; background:#f59e0b; border-radius:50%; animation: ghs-bounce 1.4s infinite ease-in-out both; animation-delay: -0.16s;"></div>
+    <div class="ghs-dot" style="width:15px; height:15px; background:#10b981; border-radius:50%; animation: ghs-bounce 1.4s infinite ease-in-out both;"></div>
+    <div class="ghs-dot" style="width:15px; height:15px; background:#fbbf24; border-radius:50%; animation: ghs-bounce 1.4s infinite ease-in-out both; animation-delay: 0.16s;"></div>
+  </div>
+
+  <div style="text-align:center; font-family:sans-serif; color:#1e3a8a; font-weight:bold; line-height:1.5;">
+    GHS GHUDUWALA <br>
+    <span style="color:#64748b; font-size:12px; font-weight:normal; letter-spacing:1px;">DIGITAL PORTAL...</span>
+  </div>
+
+  <style>
+    @keyframes ghs-bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+  </style>
+</div>
+
+<div class="lang-header">
+  <span style="font-size: 12px; font-weight: 700;">English</span>
+  <label class="switch">
+    <input type="checkbox" id="langToggle" onchange="updateLang()">
+    <span class="slider"></span>
+  </label>
+  <span style="font-size: 12px; font-weight: 700; color: var(--primary);">ਪੰਜਾਬੀ</span>
+</div>
+
+<div class="header">
+  <img src="logo.png" class="school-logo" alt="Logo">
+  <h1 class="school-name en">GHS Ghuduwala (Mansa)</h1>
+  <h1 class="school-name pa">ਸਰਕਾਰੀ ਹਾਈ ਸਕੂਲ ਘੁੱਦੂਵਾਲਾ (ਮਾਨਸਾ)</h1>
+  
+  <div class="admission-badge">
+    <span class="en">ADMISSION OPEN 2026-27</span>
+    <span class="pa">ਦਾਖਲਾ ਸ਼ੁਰੂ ਹਨ 2026-27</span>
+  </div>
+</div>
+
+<div class="doc-box">
+  <h3 class="en">⚠️ Important Documents for Admission</h3>
+  <h3 class="pa">⚠️ ਦਾਖਲੇ ਲਈ ਜ਼ਰੂਰੀ ਦਸਤਾਵੇਜ਼</h3>
+  <div class="doc-grid">
+    <div class="en">✓ Aadhar Card (Student & Parents)</div>
+    <div class="pa">✓ ਆਧਾਰ ਕਾਰਡ (ਬੱਚਾ ਅਤੇ ਮਾਪੇ)</div>
+    <div class="en">✓ Birth Certificate</div>
+    <div class="pa">✓ ਜਨਮ ਸਰਟੀਫਿਕੇਟ</div>
+    <div class="en">✓ Bank Passbook</div>
+    <div class="pa">✓ ਬੈਂਕ ਪਾਸਬੁੱਕ ਦੀ ਕਾਪੀ</div>
+    <div class="en">✓ Passport Photos (4)</div>
+    <div class="pa">✓ ਪਾਸਪੋਰਟ ਸਾਈਜ਼ 4 ਫੋਟੋਆਂ</div>
+    <div class="en">✓ Previous School leaving Certificate</div>
+    <div class="pa">✓ ਪਿਛਲਾ ਸਕੂਲ ਛੱਡਣ ਦਾ ਸਰਟੀਫਿਕੇਟ</div>
+    <div class="en" style="color: black;">✓ Caste Certificate </div>
+    <div class="pa" style="color: black;">✓ ਜਾਤੀ ਸਰਟੀਫਿਕੇਟ</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card" style="border-top: 4px solid #22c55e;">
+    <span class="f-icon">🎓</span>
+    <span class="f-text en">Free Education (6th-8th)</span>
+    <span class="f-text pa">ਮੁਫ਼ਤ ਸਿੱਖਿਆ (6ਵੀਂ ਤੋਂ 8ਵੀਂ)</span>
+  </div>
+  <div class="card" style="border-top: 4px solid #22c55e;">
+    <span class="f-icon">📚</span>
+    <span class="f-text en">Free Books</span>
+    <span class="f-text pa">ਮੁਫ਼ਤ ਕਿਤਾਬਾਂ</span>
+  </div>
+  <div class="card" style="border-top: 4px solid #22c55e;">
+    <span class="f-icon">👕</span>
+    <span class="f-text en">Free Uniform (6th-8th)</span>
+    <span class="f-text pa">ਮੁਫ਼ਤ ਵਰਦੀਆਂ (6ਵੀਂ ਤੋਂ 8ਵੀਂ)</span>
+  </div>
+  <div class="card" style="border-top: 4px solid #22c55e;">
+    <span class="f-icon">🍱</span>
+    <span class="f-text en">Mid-Day Meal6th to 8th </span>
+    <span class="f-text pa">ਮੁਫ਼ਤ ਮਿਡ ਡੇ ਮੀਲ 6th to 8th</span>
+  </div>
+
+  <div class="card">
+    <span class="f-icon">🖥️</span>
+    <span class="f-text en">Smart Classrooms</span>
+    <span class="f-text pa">ਸਮਾਰਟ ਕਲਾਸਰੂਮ</span>
+  </div>
+    <div class="card" style="border-top: 4px solid #334155;">
+    <span class="f-icon">📹</span>
+    <span class="f-text en">CCTV Surveillance</span>
+    <span class="f-text pa">ਸੀ.ਸੀ.ਟੀ.ਵੀ. ਕੈਮਰਿਆਂ ਦੀ ਨਿਗਰਾਨੀ</span>
+  </div>
+
+  <div class="card">
+    <span class="f-icon">🔬</span>
+    <span class="f-text en">Science Lab</span>
+    <span class="f-text pa">ਸਾਇੰਸ ਲੈਬ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">📖</span>
+    <span class="f-text en">Library</span>
+    <span class="f-text pa">ਲਾਇਬ੍ਰੇਰੀ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">🎧</span>
+    <span class="f-text en">Listening Speaking Lab</span>
+    <span class="f-text pa">Listening Speaking ਲੈਬ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">🛰️</span>
+    <span class="f-text en">ROT Lab</span>
+    <span class="f-text pa">ROT ਲੈਬ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">📐</span>
+    <span class="f-text en">Math Lab</span>
+    <span class="f-text pa">ਗਣਿਤ ਲੈਬ</span>
+  </div>
+
+  <div class="card" style="border-top: 4px solid #ef4444;">
+    <span class="f-icon">🥋</span>
+    <span class="f-text en">Self Defense (Girls)</span>
+    <span class="f-text pa">ਲੜਕੀਆਂ ਲਈ ਆਤਮ ਸੁਰੱਖਿਆ ਟ੍ਰੇਨਿੰਗ</span>
+  </div>
+  <div class="card" style="border-top: 4px solid #ef4444;">
+    <span class="f-icon">📈</span>
+    <span class="f-text en">NTSE / NMMS Preparation</span>
+    <span class="f-text pa">NTSE, NMMS ਟੈਸਟ ਦੀ ਤਿਆਰੀ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">🌟</span>
+    <span class="f-text en">Selection in Meritorious</span>
+    <span class="f-text pa">ਮੈਰੀਟੋਰੀਅਸ ਵਿੱਚ ਸਲੈਕਸ਼ਨ</span>
+  </div>
+
+  <div class="card">
+    <span class="f-icon">🚌</span>
+    <span class="f-text en">Educational Tours</span>
+    <span class="f-text pa">ਵਿੱਦਿਅਕ ਟੂਰ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">🩺</span>
+    <span class="f-text en">Health Checkups</span>
+    <span class="f-text pa">ਮੁਫ਼ਤ ਹੈਲਥ ਚੈੱਕਅਪ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">👨‍🏫</span>
+    <span class="f-text en">Experienced Staff</span>
+    <span class="f-text pa">ਤਜ਼ਰਬੇਕਾਰ ਸਟਾਫ਼</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">📖</span>
+    <span class="f-text en">Eng & Pbi Medium</span>
+    <span class="f-text pa">ਅੰਗ੍ਰੇਜ਼ੀ ਅਤੇ ਪੰਜਾਬੀ ਮੀਡੀਅਮ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">📻</span>
+    <span class="f-text en">Broadcasting System</span>
+    <span class="f-text pa">ਸਕੂਲ ਬਰਾਡਕਾਸਟਿੰਗ ਸਿਸਟਮ</span>
+  </div>
+  <div class="card">
+    <span class="f-icon">🌿</span>
+    <span class="f-text en">Environment Awareness</span>
+    <span class="f-text pa">ਵਾਤਾਵਰਣ ਪ੍ਰਤੀ ਜਾਗਰੂਕਤਾ</span>
+  </div>
+</div>
+
+<script>
+function updateLang() {
+  const isChecked = document.getElementById('langToggle').checked;
+  const body = document.getElementById('mainBody');
+  if(isChecked) body.classList.add('punjabi-mode');
+  else body.classList.remove('punjabi-mode');
+}
+
+  // This function runs as soon as the page is ready
+  (function() {
+    setTimeout(function() {
+      var loader = document.getElementById('ghs-loader-container');
+      if (loader) {
+        loader.style.opacity = '0'; // Fade out
+        setTimeout(function() {
+          loader.remove(); // This COMPLETELY deletes the loader from the page
+        }, 500);
+      }
+    }, 2000); // 2000ms = 2 seconds
+  })();
+
+
+</script>
+
+</body>
+      </html>
